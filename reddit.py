@@ -6,7 +6,7 @@ from comment import *
 from mongo import *
 
 class reddit:
-    def __init__(self, client_id, client_secret, username, password, limit) -> None:
+    def __init__(self, args, client_id, client_secret, username, password, limit) -> None:
         self.reddit = praw.Reddit(
             client_id=client_id,
             client_secret=client_secret,
@@ -15,8 +15,7 @@ class reddit:
             username=username,
         )
         self.limit = limit
-
-        self.m = mongoClient()
+        self.m = mongoClient(args.connectionURL, args.protocol, args.port, args.dbUsername, args.dbPassword, args.databaseName, args.ssl, args.tlsCAFile)
 
     def getSaved(self):
         for save in self.reddit.user.me().saved(limit=self.limit):
