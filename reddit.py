@@ -15,7 +15,7 @@ class reddit:
             username=username,
         )
         self.limit = limit
-        self.m = mongoClient(args.connectionURL, args.protocol, args.port, args.dbUsername, args.dbPassword, args.databaseName, args.ssl, args.tlsCAFile)
+        self.m = mongoClient(args.connectionURL, args.protocol, args.port, args.dbUsername, args.dbPassword, args.databaseName, args.ssl, args.tlsCAFile, args.username)
 
     def getSaved(self):
         for save in self.reddit.user.me().saved(limit=self.limit):
