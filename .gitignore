@@ -7,7 +7,7 @@ __pycache__/
 mongodb
 
 # VS Code
-.launch.json
+.vscode
 
 # C extensions
 *.so
