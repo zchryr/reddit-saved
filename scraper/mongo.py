@@ -9,9 +9,9 @@ class MongoClient:
                                           password=password,
                                           ssl=ssl,
                                           tlsCAFile=tls_ca_file)
-        self.db = self.client[name]
-        col_name = 'saves - ' + reddit_username
-        self.col = self.db[col_name]
+        self.database = self.client[name]
+        collection_name = 'saves - ' + reddit_username
+        self.col = self.database[collection_name]
 
     def insert_one(self, document):
         self.col.insert_one(document)
