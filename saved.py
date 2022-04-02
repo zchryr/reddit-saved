@@ -30,16 +30,3 @@ else:
     r = reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
 
 r.getSaved()
-
-# TODO 
-# Progress bar?
-# Better logging
-# √ Move Reddit API functionality to it's own class
-# API for un-saving post after it's save to Mongo
-#  - try/except / whatever checking if DB save was successful?
-#     - retry? just don't unsave and try again next time?
-# √ Credentials via CLI args
-# Track (deleted count, number of requests) and summarize in logs / notifications
-# Mattermost / Slack / Discord support
-# Args input handling, make sure strings are strings and int is int
-# Some sort of verification that script can even auth to Reddit with creds.
