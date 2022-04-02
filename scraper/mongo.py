@@ -1,20 +1,20 @@
 import pymongo
 
-class mongoClient:
+class MongoClient:
     def __init__(self, connectionURL, protocol, port,
-        username, password, name, ssl, tlsCAFile, redditUsername) -> None:
+        username, password, name, ssl, tls_ca_file, reddit_username) -> None:
         self.client = pymongo.MongoClient(host=protocol + "://" + connectionURL,
             port=port,
             username=username,
             password=password,
             ssl=ssl,
-            tlsCAFile=tlsCAFile)
+            tlsCAFile=tls_ca_file)
         self.db = self.client[name]
-        colName = 'saves - ' + redditUsername
-        self.col = self.db[colName]
+        col_name = 'saves - ' + reddit_username
+        self.col = self.db[col_name]
 
-    def insertOne(self, document):
+    def insert_one(self, document):
         self.col.insert_one(document)
 
-    def insertMany(self, documents):
+    def insert_many(self, documents):
         self.col.insert_many(documents)
