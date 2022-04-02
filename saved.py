@@ -24,7 +24,7 @@ parser.add_argument('-tlsCAFile', type=str, required=True, help='Location of Mon
 
 args = parser.parse_args()
 
-if args.limit == None:
+if args.limit is None:
     r = reddit(args, args.client_id, args.client_secret, args.username, args.password, None)
 else:
     r = reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
