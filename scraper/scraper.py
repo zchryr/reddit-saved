@@ -1,7 +1,7 @@
 import argparse
 
 # My libs.
-from reddit import *
+import reddit
 
 parser = argparse.ArgumentParser(description="Saving saved Reddit posts/comments.")
 

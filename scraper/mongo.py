@@ -1,7 +1,7 @@
 import pymongo
 
 class mongoClient:
-    def __init__(self, connectionURL, protocol, port, 
+    def __init__(self, connectionURL, protocol, port,
         username, password, name, ssl, tlsCAFile, redditUsername) -> None:
         self.client = pymongo.MongoClient(host=protocol + "://" + connectionURL,
             port=port,
