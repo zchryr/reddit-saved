@@ -1,4 +1,4 @@
-class submission(object):
+class Submission(object):
     def __init__(self, author, clicked, created_utc, distinguished, edited,
             sid, is_original_content, is_self, link_flair_text,
             locked, name, num_comments, over_18, permalink, saved, score,

@@ -1,7 +1,7 @@
 import argparse
 
 # My libs.
-import reddit
+from reddit import Reddit
 
 parser = argparse.ArgumentParser(description="Saving saved Reddit posts/comments.")
 
@@ -25,8 +25,8 @@ parser.add_argument('-tls_ca_file', type=str, required=True, help='Location of M
 args = parser.parse_args()
 
 if args.limit is None:
-    r = reddit(args, args.client_id, args.client_secret, args.username, args.password, None)
+    r = Reddit(args, args.client_id, args.client_secret, args.username, args.password, None)
 else:
-    r = reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
+    r = Reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
 
 r.getSaved()
