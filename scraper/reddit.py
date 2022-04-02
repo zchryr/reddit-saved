@@ -1,4 +1,3 @@
-from mimetypes import common_types
 import praw
 
 # My libs.
