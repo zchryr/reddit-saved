@@ -2,7 +2,8 @@ class submission(object):
     def __init__(self, author, clicked, created_utc, distinguished, edited, 
                  sid, is_original_content, is_self, link_flair_text,
                  locked, name, num_comments, over_18, permalink, saved, score, 
-                 selftext, spoiler, stickied, subreddit, subreddit_id, title, upvote_ratio, url) -> None:
+                 selftext, spoiler, stickied, subreddit, subreddit_id, title, 
+                 upvote_ratio, url) -> None:
         self.type = "submission"
         self.author = author
         self.clicked = clicked
