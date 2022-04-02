@@ -40,4 +40,3 @@ class reddit:
                 except AttributeError as e:
                     print("Save was deleted or removed.")
                     continue
-    
