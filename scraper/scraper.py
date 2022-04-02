@@ -25,8 +25,8 @@ parser.add_argument('-tls_ca_file', type=str, required=True, help='Location of M
 args = parser.parse_args()
 
 if args.limit is None:
-    r = Reddit(args, args.client_id, args.client_secret, args.username, args.password, None)
+    R = Reddit(args, args.client_id, args.client_secret, args.username, args.password, None)
 else:
-    r = Reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
+    R = Reddit(args, args.client_id, args.client_secret, args.username, args.password, int(args.limit))
 
-r.getSaved()
+R.get_saved()
