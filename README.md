@@ -4,7 +4,7 @@
 TODO.
 
 ## Motivation
-I constantly save posts/comments while using Reddit, almost always with the intention as a "save for later" or similar. Not only do I rarely go back to these saves, but the format for them is not very organized or categorized. I'd like to build a set of services to scrape the saves, store them, alert me on new saves, categorize saves, and probably quite a bit more. I'd like to do this in the hopes that I'm able to make better use out of what I save while using Reddit.
+I constantly save posts/comments while using Reddit, almost always with the intention of a "save to read later" or similar. Not only do I rarely go back to these saves, but the format for them is not very organized or categorized. It's not always very easy to search for something I know I've saved. I'd like to build a set of services to scrape the saves, store them, alert me on new saves, categorize saves, and probably quite a bit more. I'd like to do this in the hopes that I'm able to make better use out of what I save while using Reddit.
 
 ## The Future
 So far I've written a scraper to grab the saves using Reddit's API, and store them in MongoDB.
