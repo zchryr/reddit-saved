@@ -25,12 +25,14 @@ class Reddit:
             if isinstance(save, praw.models.reddit.submission.Submission):
                 try:
                     submission = Submission(save.author.name, save.clicked, save.created_utc,
-                                   save.distinguished, save.edited, save.id,
-                                   save.is_original_content, save.is_self, save.link_flair_text,
-                                   save.locked, save.name, save.num_comments, save.over_18,
-                                   save.permalink, save.saved, save.score, save.selftext,
-                                   save.spoiler, save.stickied, save.subreddit.display_name,
-                                   save.subreddit.id, save.title, save.upvote_ratio, save.url)
+                                            save.distinguished, save.edited, save.id,
+                                            save.is_original_content, save.is_self,
+                                            save.link_flair_text, save.locked, save.name,
+                                            save.num_comments, save.over_18, save.permalink,
+                                            save.saved, save.score, save.selftext, save.spoiler,
+                                            save.stickied, save.subreddit.display_name,
+                                            save.subreddit.id, save.title, save.upvote_ratio,
+                                            save.url)
                     self.MONGO_CLIENT.insert_one(submission.__dict__)
                 except AttributeError as error:
                     print("Save was deleted or removed.")
@@ -38,10 +40,10 @@ class Reddit:
             elif isinstance(save, praw.models.reddit.comment.Comment):
                 try:
                     comment = Comment(save.author.name, save.body, save.body_html, save.created_utc,
-                                save.distinguished, save.edited, save.id, save.is_submitter,
-                                save.link_id, save.parent_id, save.permalink, save.saved,
-                                save.score, save.stickied, save.submission.id,
-                                save.subreddit.display_name, save.subreddit.id)
+                                      save.distinguished, save.edited, save.id, save.is_submitter,
+                                      save.link_id, save.parent_id, save.permalink, save.saved,
+                                      save.score, save.stickied, save.submission.id,
+                                      save.subreddit.display_name, save.subreddit.id)
                     self.MONGO_CLIENT.insert_one(comment.__dict__)
                 except AttributeError as error:
                     print("Save was deleted or removed.")
