@@ -15,7 +15,7 @@ class Reddit:
             username=username,
         )
         self.limit = limit
-        self.MONGO_CLIENT = MongoClient(args.connection_url, args.protocol, args.port,
+        self.mongo_client = MongoClient(args.connection_url, args.protocol, args.port,
                                         args.db_username, args.db_password, args.database_name,
                                         args.ssl, args.tls_ca_file, args.username)
 
@@ -32,7 +32,7 @@ class Reddit:
                                             save.stickied, save.subreddit.display_name,
                                             save.subreddit.id, save.title, save.upvote_ratio,
                                             save.url)
-                    self.MONGO_CLIENT.insert_one(submission.__dict__)
+                    self.mongo_client.insert_one(submission.__dict__)
                 except AttributeError as error:
                     print("Save was deleted or removed.")
                     continue
@@ -43,7 +43,7 @@ class Reddit:
                                       save.link_id, save.parent_id, save.permalink, save.saved,
                                       save.score, save.stickied, save.submission.id,
                                       save.subreddit.display_name, save.subreddit.id)
-                    self.MONGO_CLIENT.insert_one(comment.__dict__)
+                    self.mongo_client.insert_one(comment.__dict__)
                 except AttributeError as error:
                     print("Save was deleted or removed.")
                     continue
