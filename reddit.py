@@ -21,10 +21,10 @@ class reddit:
         for save in self.reddit.user.me().saved(limit=self.limit):
             if (isinstance(save, praw.models.reddit.submission.Submission)):
                 try:
-                    s = submission(save.author.name, save.clicked, save.created_utc, save.distinguished, save.edited, 
-                            save.id, save.is_original_content, save.is_self, save.link_flair_text, save.locked, 
-                            save.name, save.num_comments, save.over_18, save.permalink, save.saved, save.score, 
-                            save.selftext, save.spoiler, save.stickied, save.subreddit.display_name, save.subreddit.id, 
+                    s = submission(save.author.name, save.clicked, save.created_utc, save.distinguished, save.edited,
+                            save.id, save.is_original_content, save.is_self, save.link_flair_text, save.locked,
+                            save.name, save.num_comments, save.over_18, save.permalink, save.saved, save.score,
+                            save.selftext, save.spoiler, save.stickied, save.subreddit.display_name, save.subreddit.id,
                             save.title, save.upvote_ratio, save.url)
                     self.m.insertOne(s.__dict__)
                 except AttributeError as e:
