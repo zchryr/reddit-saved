@@ -33,8 +33,8 @@ class reddit:
             elif (isinstance(save, praw.models.reddit.comment.Comment)):
                 try:
                     c = comment(save.author.name, save.body, save.body_html, save.created_utc, save.distinguished,
-                            save.edited, save.id, save.is_submitter, save.link_id, save.parent_id, save.permalink, 
-                            save.saved, save.score, save.stickied, save.submission.id, save.subreddit.display_name, 
+                            save.edited, save.id, save.is_submitter, save.link_id, save.parent_id, save.permalink,
+                            save.saved, save.score, save.stickied, save.submission.id, save.subreddit.display_name,
                             save.subreddit.id)
                     self.m.insertOne(c.__dict__)
                 except AttributeError as e:
