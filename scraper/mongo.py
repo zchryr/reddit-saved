@@ -18,6 +18,7 @@ class MongoClient:
         except Exception as error:
             LOGGER.critical("Failed to connect go MongoDB.")
             LOGGER.critical("Exception: " + str(error))
+            exit(1)
 
         self.database = self.client[db_name]
         collection_name = 'saves - ' + reddit_username
