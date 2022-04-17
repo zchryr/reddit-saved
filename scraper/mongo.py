@@ -1,6 +1,6 @@
 import pymongo
 from logger import Logger
-logger = Logger
+LOGGER = Logger
 
 class MongoClient:
     def __init__(self, connection_url, protocol, port,
@@ -14,10 +14,10 @@ class MongoClient:
                                               password=db_password,
                                               ssl=ssl)
             self.client.server_info()
-            logger.info("Successfully connected to MongoDB!")
+            LOGGER.info("Successfully connected to MongoDB!")
         except Exception as error:
-            logger.critical("Failed to connect go MongoDB.")
-            logger.critical("Exception: " + str(error))
+            LOGGER.critical("Failed to connect go MongoDB.")
+            LOGGER.critical("Exception: " + str(error))
 
         # TODO Write checks in here to see if DB already exists and such.
         self.database = self.client[db_name]

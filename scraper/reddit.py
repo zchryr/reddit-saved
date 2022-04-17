@@ -5,7 +5,7 @@ from submission import Submission
 from comment import Comment
 from mongo import MongoClient
 from logger import Logger
-logger = Logger
+LOGGER = Logger
 
 class Reddit:
     def __init__(self, args, client_id, client_secret, reddit_username, reddit_password,
@@ -24,7 +24,7 @@ class Reddit:
                                         ssl=args.ssl, reddit_username=args.reddit_username)
 
     def get_saved(self):
-        logger.info("Hitting Reddit API to get saves.")
+        LOGGER.info("Hitting Reddit API to get saves.")
         for save in self.reddit_client.user.me().saved(limit=self.limit):
             if isinstance(save, praw.models.reddit.submission.Submission):
                 try:
@@ -39,12 +39,12 @@ class Reddit:
                                             save.url)
                     try:
                         self.mongo_client.insert_one(submission.__dict__)
-                        logger.info("Saved post ID: " + str(save.id) + " successfully!")
+                        LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
                     except Exception as error:
-                        logger.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                        logger.error("Exception: " + str(error))
+                        LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                        LOGGER.error("Exception: " + str(error))
                 except AttributeError as error:
-                    logger.info("Save ID: " + str(save.id) + "was deleted or removed.")
+                    LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
             elif isinstance(save, praw.models.reddit.comment.Comment):
                 try:
@@ -55,10 +55,10 @@ class Reddit:
                                       save.subreddit.display_name, save.subreddit.id)
                     try:
                         self.mongo_client.insert_one(comment.__dict__)
-                        logger.info("Saved comment ID: " + str(save.id) + " successfully!")
+                        LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
                     except Exception as error:
-                        logger.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                        logger.error("Exception: " + str(error))
+                        LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                        LOGGER.error("Exception: " + str(error))
                 except AttributeError as error:
-                    logger.info("Save ID: " + str(save.id) + "was deleted or removed.")
+                    LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
