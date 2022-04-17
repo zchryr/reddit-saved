@@ -1,4 +1,4 @@
-class Comment():
+class Comment:
     def __init__(self, author, body, body_html, created_utc, distinguished, edited, cid,
                  is_submitter, link_id, parent_id, permalink, saved, score, stickied, submission,
                  subreddit, subreddit_id) -> None:

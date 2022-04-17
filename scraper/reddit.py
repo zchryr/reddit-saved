@@ -1,25 +1,30 @@
 import praw
 
-# My libs.
+# Local libraries.
 from submission import Submission
 from comment import Comment
 from mongo import MongoClient
+from logger import Logger
+logger = Logger
 
 class Reddit:
-    def __init__(self, args, client_id, client_secret, username, password, limit) -> None:
+    def __init__(self, args, client_id, client_secret, reddit_username, reddit_password,
+                 limit) -> None:
         self.reddit_client = praw.Reddit(
             client_id=client_id,
             client_secret=client_secret,
-            password=password,
+            password=reddit_password,
             user_agent="ScrapeSaved/0.0.1",
-            username=username,
+            username=reddit_username,
         )
         self.limit = limit
-        self.mongo_client = MongoClient(args.connection_url, args.protocol, args.port,
-                                        args.db_username, args.db_password, args.database_name,
-                                        args.ssl, args.tls_ca_file, args.username)
+        self.mongo_client = MongoClient(connection_url=args.connection_url, protocol=args.protocol,
+                                        port=args.port, db_username=args.db_username,
+                                        db_password=args.db_password, db_name=args.database_name,
+                                        ssl=args.ssl, reddit_username=args.reddit_username)
 
     def get_saved(self):
+        logger.info("Hitting Reddit API to get saves.")
         for save in self.reddit_client.user.me().saved(limit=self.limit):
             if isinstance(save, praw.models.reddit.submission.Submission):
                 try:
@@ -32,9 +37,14 @@ class Reddit:
                                             save.stickied, save.subreddit.display_name,
                                             save.subreddit.id, save.title, save.upvote_ratio,
                                             save.url)
-                    self.mongo_client.insert_one(submission.__dict__)
+                    try:
+                        self.mongo_client.insert_one(submission.__dict__)
+                        logger.info("Saved post ID: " + str(save.id) + " successfully!")
+                    except Exception as error:
+                        logger.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                        logger.error("Exception: " + str(error))
                 except AttributeError as error:
-                    print("Save was deleted or removed.")
+                    logger.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
             elif isinstance(save, praw.models.reddit.comment.Comment):
                 try:
@@ -43,7 +53,12 @@ class Reddit:
                                       save.link_id, save.parent_id, save.permalink, save.saved,
                                       save.score, save.stickied, save.submission.id,
                                       save.subreddit.display_name, save.subreddit.id)
-                    self.mongo_client.insert_one(comment.__dict__)
+                    try:
+                        self.mongo_client.insert_one(comment.__dict__)
+                        logger.info("Saved comment ID: " + str(save.id) + " successfully!")
+                    except Exception as error:
+                        logger.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                        logger.error("Exception: " + str(error))
                 except AttributeError as error:
-                    print("Save was deleted or removed.")
+                    logger.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
