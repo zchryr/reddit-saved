@@ -19,7 +19,6 @@ class MongoClient:
             LOGGER.critical("Failed to connect go MongoDB.")
             LOGGER.critical("Exception: " + str(error))
 
-        # TODO Write checks in here to see if DB already exists and such.
         self.database = self.client[db_name]
         collection_name = 'saves - ' + reddit_username
         self.col = self.database[collection_name]
