@@ -61,11 +61,12 @@ class Reddit:
                         continue
                 elif isinstance(save, praw.models.reddit.comment.Comment):
                     try:
-                        comment = Comment(save.author.name, save.body, save.body_html, save.created_utc,
-                                        save.distinguished, save.edited, save.id, save.is_submitter,
-                                        save.link_id, save.parent_id, save.permalink, save.saved,
-                                        save.score, save.stickied, save.submission.id,
-                                        save.subreddit.display_name, save.subreddit.id)
+                        comment = Comment(save.author.name, save.body, save.body_html,
+                                          save.created_utc, save.distinguished, save.edited,
+                                          save.id, save.is_submitter, save.link_id, save.parent_id,
+                                          save.permalink, save.saved, save.score, save.stickied,
+                                          save.submission.id, save.subreddit.display_name,
+                                          save.subreddit.id)
                         try:
                             self.mongo_client.insert_one(comment.__dict__)
                             LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
@@ -76,9 +77,11 @@ class Reddit:
                             try:
                                 unsave_comment = self.reddit_client.comment(comment.id)
                                 unsave_comment.unsave()
-                                LOGGER.info("Unsaved comment ID: " + str(save.id) + " successfully!")
+                                LOGGER.info("Unsaved comment ID: " + str(save.id)
+                                            + " successfully!")
                             except Exception as unsave_error:
-                                LOGGER.error("Failed to unsave: " + str(submission.id) + " comment.")
+                                LOGGER.error("Failed to unsave: " + str(submission.id)
+                                             + " comment.")
                                 LOGGER.error("Exception: " + str(unsave_error))
                     except AttributeError as error:
                         LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
