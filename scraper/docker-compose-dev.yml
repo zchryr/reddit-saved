@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: CHANGE-ME
+      MONGO_INITDB_ROOT_PASSWORD: CHANGE-ME
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb:/data/db
+
+  python:
+    build: .
+    container_name: scraper
+    command: -client_id "CHANGE-ME" -client_secret "CHANGE-ME" -reddit_username "CHANGE-ME" -reddit_password "CHANGE-ME" -limit "CHANGE-ME" -connection_url "CHANGE-ME" -protocol "CHANGE-ME" -port "CHANGE-ME" -db_username "CHANGE-ME" -db_password "CHANGE-ME" -database_name "CHANGE-ME" -ssl "CHANGE-ME"
+    depends_on:
+      - mongodb
