@@ -9,6 +9,7 @@ class MongoClient:
     def __init__(self, connection_url, protocol, port,
                  db_username, db_password, db_name, ssl, reddit_username) -> None:
         self.client = None
+        self.existing_ids = set()
 
         try:
             self.client = pymongo.MongoClient(host=protocol + "://" + connection_url,
@@ -34,3 +35,21 @@ class MongoClient:
     def insert_many(self, documents):
         """Insert many documents (py dicts) into collection."""
         self.col.insert_many(documents)
+
+    def get_existing(self):
+        """Get Reddit submission/comment ids that have already been saved to DB."""
+        mongo_filter={}
+        mongo_project={
+            'id': True
+        }
+
+        result = self.col.find(
+            filter=mongo_filter,
+            projection=mongo_project
+        )
+        for existing_id in result:
+            self.existing_ids.add(existing_id['id'])
+
+    def check_existing(self, save_id):
+        """Checks if a submission/comment already exists in DB."""
+        return save_id in self.existing_ids
