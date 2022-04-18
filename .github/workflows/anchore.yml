@@ -22,11 +22,11 @@ jobs:
 
       - name: Build image
         uses: docker/build-push-action@v2
+        working-directory: ./scraper
         with:
           tags: ${{ github.actor }}/scraper:latest
           push: false
           load: true
-          file: ./scraper/Dockerfile
 
       - name: Scan image
         uses: anchore/scan-action@v3
