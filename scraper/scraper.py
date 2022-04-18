@@ -1,3 +1,4 @@
+"""Python library for parsing CLI arguments."""
 import argparse
 
 # Local libraries.
@@ -10,7 +11,8 @@ PARSER.add_argument('-client_id', type=str, required=True, help='Reddit app clie
 PARSER.add_argument('-client_secret', type=str, required=True, help='Reddit app client_secret')
 PARSER.add_argument('-reddit_username', type=str, required=True, help='Reddit account username')
 PARSER.add_argument('-reddit_password', type=str, required=True, help='Reddit account password')
-PARSER.add_argument('-limit', help='Limit of API requests made to Reddit. None if not specified.', default=None)
+PARSER.add_argument('-limit', help='Limit of API requests made to Reddit. None if not specified.',
+                    default=None)
 
 # MongoDB args.
 PARSER.add_argument('-connection_url', type=str, required=True, help='MongoDB connection URL')
@@ -18,7 +20,8 @@ PARSER.add_argument('-protocol', type=str, required=True, help='MongoDB protocol
 PARSER.add_argument('-port', type=int, required=True, help='MongoDB listening port')
 PARSER.add_argument('-db_username', type=str, required=True, help='MongoDB authentication username')
 PARSER.add_argument('-db_password', type=str, required=True, help='MongoDB user password')
-PARSER.add_argument('-database_name', type=str, required=True, help='MongoDB database name to be used')
+PARSER.add_argument('-database_name', type=str, required=True,
+                    help='MongoDB database name to be used')
 PARSER.add_argument('-ssl', type=str, required=True, help='MongoDB TLS configuration')
 
 ARGS = PARSER.parse_args()

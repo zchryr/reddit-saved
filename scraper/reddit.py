@@ -8,6 +8,7 @@ from logger import Logger
 LOGGER = Logger
 
 class Reddit:
+    """Class to get saved Reddit posts, put them in a MongoDB, and unsave them."""
     def __init__(self, args, client_id, client_secret, reddit_username, reddit_password,
                  limit) -> None:
         self.reddit_client = praw.Reddit(
@@ -24,6 +25,7 @@ class Reddit:
                                         ssl=args.ssl, reddit_username=args.reddit_username)
 
     def get_saved(self):
+        """Go through the saved Reddit posts, save to MongoDB, and unsave them if successful."""
         LOGGER.info("Hitting Reddit API to get saves.")
         for save in self.reddit_client.user.me().saved(limit=self.limit):
             if isinstance(save, praw.models.reddit.submission.Submission):
@@ -43,6 +45,9 @@ class Reddit:
                     except Exception as error:
                         LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
                         LOGGER.error("Exception: " + str(error))
+                    else:
+                        # Unsave Reddit post.
+                        print()
                 except AttributeError as error:
                     LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
@@ -59,6 +64,9 @@ class Reddit:
                     except Exception as error:
                         LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
                         LOGGER.error("Exception: " + str(error))
+                    else:
+                        # Unsave Reddit comment.
+                        print()
                 except AttributeError as error:
                     LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                     continue
