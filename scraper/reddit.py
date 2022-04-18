@@ -1,3 +1,5 @@
+"""Python library to interact with Reddit."""
+import sys
 import praw
 
 # Local libraries.
@@ -27,46 +29,60 @@ class Reddit:
     def get_saved(self):
         """Go through the saved Reddit posts, save to MongoDB, and unsave them if successful."""
         LOGGER.info("Hitting Reddit API to get saves.")
-        for save in self.reddit_client.user.me().saved(limit=self.limit):
-            if isinstance(save, praw.models.reddit.submission.Submission):
-                try:
-                    submission = Submission(save.author.name, save.clicked, save.created_utc,
-                                            save.distinguished, save.edited, save.id,
-                                            save.is_original_content, save.is_self,
-                                            save.link_flair_text, save.locked, save.name,
-                                            save.num_comments, save.over_18, save.permalink,
-                                            save.saved, save.score, save.selftext, save.spoiler,
-                                            save.stickied, save.subreddit.display_name,
-                                            save.subreddit.id, save.title, save.upvote_ratio,
-                                            save.url)
+        try:
+            for save in self.reddit_client.user.me().saved(limit=self.limit):
+                if isinstance(save, praw.models.reddit.submission.Submission):
                     try:
-                        self.mongo_client.insert_one(submission.__dict__)
-                        LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
-                    except Exception as error:
-                        LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                        LOGGER.error("Exception: " + str(error))
-                    else:
-                        # Unsave Reddit post.
-                        print()
-                except AttributeError as error:
-                    LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
-                    continue
-            elif isinstance(save, praw.models.reddit.comment.Comment):
-                try:
-                    comment = Comment(save.author.name, save.body, save.body_html, save.created_utc,
-                                      save.distinguished, save.edited, save.id, save.is_submitter,
-                                      save.link_id, save.parent_id, save.permalink, save.saved,
-                                      save.score, save.stickied, save.submission.id,
-                                      save.subreddit.display_name, save.subreddit.id)
+                        submission = Submission(save.author.name, save.clicked, save.created_utc,
+                                                save.distinguished, save.edited, save.id,
+                                                save.is_original_content, save.is_self,
+                                                save.link_flair_text, save.locked, save.name,
+                                                save.num_comments, save.over_18, save.permalink,
+                                                save.saved, save.score, save.selftext, save.spoiler,
+                                                save.stickied, save.subreddit.display_name,
+                                                save.subreddit.id, save.title, save.upvote_ratio,
+                                                save.url)
+                        try:
+                            self.mongo_client.insert_one(submission.__dict__)
+                            LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
+                        except Exception as error:
+                            LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                            LOGGER.error("Exception: " + str(error))
+                        else:
+                            try:
+                                unsave_submission = self.reddit_client.submission(submission.id)
+                                unsave_submission.unsave()
+                                LOGGER.info("Unsaved post ID: " + str(save.id) + " successfully!")
+                            except Exception as unsave_error:
+                                LOGGER.error("Failed to unsave: " + str(submission.id) + " post.")
+                                LOGGER.error("Exception: " + str(unsave_error))
+                    except AttributeError as error:
+                        LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
+                        continue
+                elif isinstance(save, praw.models.reddit.comment.Comment):
                     try:
-                        self.mongo_client.insert_one(comment.__dict__)
-                        LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
-                    except Exception as error:
-                        LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                        LOGGER.error("Exception: " + str(error))
-                    else:
-                        # Unsave Reddit comment.
-                        print()
-                except AttributeError as error:
-                    LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
-                    continue
+                        comment = Comment(save.author.name, save.body, save.body_html, save.created_utc,
+                                        save.distinguished, save.edited, save.id, save.is_submitter,
+                                        save.link_id, save.parent_id, save.permalink, save.saved,
+                                        save.score, save.stickied, save.submission.id,
+                                        save.subreddit.display_name, save.subreddit.id)
+                        try:
+                            self.mongo_client.insert_one(comment.__dict__)
+                            LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
+                        except Exception as error:
+                            LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                            LOGGER.error("Exception: " + str(error))
+                        else:
+                            try:
+                                unsave_comment = self.reddit_client.comment(comment.id)
+                                unsave_comment.unsave()
+                                LOGGER.info("Unsaved comment ID: " + str(save.id) + " successfully!")
+                            except Exception as unsave_error:
+                                LOGGER.error("Failed to unsave: " + str(submission.id) + " comment.")
+                                LOGGER.error("Exception: " + str(unsave_error))
+                    except AttributeError as error:
+                        LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
+                        continue
+        except AttributeError as error:
+            LOGGER.info("No Reddit saves to archive.")
+            sys.exit(0)
