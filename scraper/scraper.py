@@ -24,6 +24,11 @@ PARSER.add_argument('-database_name', type=str, required=True,
                     help='MongoDB database name to be used')
 PARSER.add_argument('-ssl', type=str, required=True, help='MongoDB TLS configuration')
 
+# Other args.
+PARSER.add_argument('-unsave', type=str, required=False, default='yes',
+                    help='Choose whether to unsave post/comment after saving to MongoDB. ' +
+                    "Default: 'yes', Options: 'yes' | 'no'")
+
 ARGS = PARSER.parse_args()
 
 if ARGS.limit is None:
