@@ -5,14 +5,12 @@ FROM python:alpine
 WORKDIR /app
 
 # Updates.
-RUN apt update && \
-    apt -y upgrade && \
-    apt -y dist-upgrade
+RUN apk update && \
+    apk upgrade
 
 # Unprivileged user setup.
-RUN addgroup --gid 1001 --system scraper && \
-    adduser --disabled-password --uid 1001 --system --group scraper && \
-    chown -R scraper:scraper /app
+RUN addgroup -S scraper && \
+    adduser -G scraper -S scraper
 USER scraper
 
 # Install python packages.
