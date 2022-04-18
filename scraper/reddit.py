@@ -108,7 +108,7 @@ class Reddit:
 
     def unsave(self, save_id, save_type):
         """Unsaves Reddit submission/comment given the ID."""
-        if self.unsave == "yes": # pylint: disable=W0143
+        if self.unsave == "yes": # pylint: disable=comparison-with-callable
             if save_type == "submission":
                 unsave_submission = self.reddit_client.submission(save_id)
                 unsave_submission.unsave()
