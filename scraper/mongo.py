@@ -38,8 +38,8 @@ class MongoClient:
 
     def get_existing(self):
         """Get Reddit submission/comment ids that have already been saved to DB."""
-        mongo_filter={}
-        mongo_project={
+        mongo_filter = {}
+        mongo_project = {
             'id': True
         }
 
