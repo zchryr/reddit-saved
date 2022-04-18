@@ -11,7 +11,8 @@ services:
       - ./mongodb:/data/db
 
   python:
-    image: scraper:dev
+    build: .
+    container_name: scraper
     command: -client_id "CHANGE-ME" -client_secret "CHANGE-ME" -reddit_username "CHANGE-ME" -reddit_password "CHANGE-ME" -limit "CHANGE-ME" -connection_url "CHANGE-ME" -protocol "CHANGE-ME" -port "CHANGE-ME" -db_username "CHANGE-ME" -db_password "CHANGE-ME" -database_name "CHANGE-ME" -ssl "CHANGE-ME"
     depends_on:
       - mongodb
