@@ -41,4 +41,4 @@ else:
                ARGS.reddit_password,
                int(ARGS.limit))
 
-R.get_saved()
+R.main()
