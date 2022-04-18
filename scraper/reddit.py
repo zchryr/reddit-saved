@@ -20,6 +20,7 @@ class Reddit:
             user_agent="ScrapeSaved/0.0.1",
             username=reddit_username,
         )
+        self.unsave_choice = args.unsave
         self.limit = limit
         self.mongo_client = MongoClient(connection_url=args.connection_url, protocol=args.protocol,
                                         port=args.port, db_username=args.db_username,
@@ -107,11 +108,12 @@ class Reddit:
 
     def unsave(self, save_id, save_type):
         """Unsaves Reddit submission/comment given the ID."""
-        if save_type == "submission":
-            unsave_submission = self.reddit_client.submission(save_id)
-            unsave_submission.unsave()
-            LOGGER.info("Unsaved post ID: " + str(save_id) + " successfully!")
-        elif save_type == "comment":
-            unsave_comment = self.reddit_client.comment(save_id)
-            unsave_comment.unsave()
-            LOGGER.info("Unsaved comment ID: " + str(save_id) + " successfully!")
+        if self.unsave == "yes": # pylint: disable=W0143
+            if save_type == "submission":
+                unsave_submission = self.reddit_client.submission(save_id)
+                unsave_submission.unsave()
+                LOGGER.info("Unsaved post ID: " + str(save_id) + " successfully!")
+            elif save_type == "comment":
+                unsave_comment = self.reddit_client.comment(save_id)
+                unsave_comment.unsave()
+                LOGGER.info("Unsaved comment ID: " + str(save_id) + " successfully!")
