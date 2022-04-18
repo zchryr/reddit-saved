@@ -3,8 +3,12 @@ name: Anchore Container Scan - scraper
 on:
   push:
     branches: [ main ]
+    paths:
+      - scraper/Dockerfile
   pull_request:
     branches: [ main ]
+    paths:
+      - scraper/Dockerfile
   schedule:
     - cron: '0 1 * * MON' # Every Monday.
   workflow_dispatch: # Manual trigger.
