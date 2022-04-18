@@ -26,8 +26,15 @@ class Reddit:
                                         db_password=args.db_password, db_name=args.database_name,
                                         ssl=args.ssl, reddit_username=args.reddit_username)
 
-    def get_saved(self):
-        """Go through the saved Reddit posts, save to MongoDB, and unsave them if successful."""
+        self.exiting_saves = self.mongo_client.col.find({ id: True })
+
+    def main(self):
+        """Go through the saved Reddit posts, checks for duplicates save to MongoDB,
+           and unsaves them if successful."""
+
+        LOGGER.info("Collecting existing saves.")
+        self.mongo_client.get_existing()
+
         LOGGER.info("Hitting Reddit API to get saves.")
         try:
             for save in self.reddit_client.user.me().saved(limit=self.limit):
@@ -42,20 +49,25 @@ class Reddit:
                                                 save.stickied, save.subreddit.display_name,
                                                 save.subreddit.id, save.title, save.upvote_ratio,
                                                 save.url)
-                        try:
-                            self.mongo_client.insert_one(submission.__dict__)
-                            LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
-                        except Exception as error:
-                            LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                            LOGGER.error("Exception: " + str(error))
-                        else:
+                        if self.mongo_client.check_existing(submission.id) is False:
                             try:
-                                unsave_submission = self.reddit_client.submission(submission.id)
-                                unsave_submission.unsave()
-                                LOGGER.info("Unsaved post ID: " + str(save.id) + " successfully!")
-                            except Exception as unsave_error:
-                                LOGGER.error("Failed to unsave: " + str(submission.id) + " post.")
-                                LOGGER.error("Exception: " + str(unsave_error))
+                                self.mongo_client.insert_one(submission.__dict__)
+                                LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
+                            except Exception as error:
+                                LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                                LOGGER.error("Exception: " + str(error))
+                            else:
+                                try:
+                                    self.unsave(submission.id, "submission")
+                                except Exception as unsave_error:
+                                    LOGGER.error("Failed to unsave: " + str(submission.id) +
+                                                 " post.")
+                                    LOGGER.error("Exception: " + str(unsave_error))
+                        else:
+                            LOGGER.info("Post: " + str(submission.id) +
+                                        " already exists in the database.")
+                            self.unsave(submission.id, "submission")
+                            continue
                     except AttributeError as error:
                         LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                         continue
@@ -67,25 +79,39 @@ class Reddit:
                                           save.permalink, save.saved, save.score, save.stickied,
                                           save.submission.id, save.subreddit.display_name,
                                           save.subreddit.id)
-                        try:
-                            self.mongo_client.insert_one(comment.__dict__)
-                            LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
-                        except Exception as error:
-                            LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
-                            LOGGER.error("Exception: " + str(error))
-                        else:
+                        if self.mongo_client.check_existing(comment.id) is False:
                             try:
-                                unsave_comment = self.reddit_client.comment(comment.id)
-                                unsave_comment.unsave()
-                                LOGGER.info("Unsaved comment ID: " + str(save.id)
-                                            + " successfully!")
-                            except Exception as unsave_error:
-                                LOGGER.error("Failed to unsave: " + str(submission.id)
-                                             + " comment.")
-                                LOGGER.error("Exception: " + str(unsave_error))
+                                self.mongo_client.insert_one(comment.__dict__)
+                                LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
+                            except Exception as error:
+                                LOGGER.error("Failed to save ID: " + str(save.id) + " to MongoDB.")
+                                LOGGER.error("Exception: " + str(error))
+                            else:
+                                try:
+                                    self.unsave(comment.id, "comment")
+                                except Exception as unsave_error:
+                                    LOGGER.error("Failed to unsave: " + str(submission.id)
+                                                + " comment.")
+                                    LOGGER.error("Exception: " + str(unsave_error))
+                        else:
+                            LOGGER.info("Comment: " + str(comment.id) +
+                                        " already exists in the database.")
+                            self.unsave(comment.id, "comment")
+                            continue
                     except AttributeError as error:
                         LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
                         continue
         except AttributeError as error:
             LOGGER.info("No Reddit saves to archive.")
             sys.exit(0)
+
+    def unsave(self, save_id, save_type):
+        """Unsaves Reddit submission/comment given the ID."""
+        if save_type == "submission":
+            unsave_submission = self.reddit_client.submission(save_id)
+            unsave_submission.unsave()
+            LOGGER.info("Unsaved post ID: " + str(save_id) + " successfully!")
+        elif save_type == "comment":
+            unsave_comment = self.reddit_client.comment(save_id)
+            unsave_comment.unsave()
+            LOGGER.info("Unsaved comment ID: " + str(save_id) + " successfully!")
