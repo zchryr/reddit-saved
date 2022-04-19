@@ -11,7 +11,7 @@ class Submission:
         self.created_utc = created_utc
         self.distinguished = distinguished
         self.edited = edited
-        self.id = sid
+        self.reddit_id = sid
         self.is_original_content = is_original_content
         self.is_self = is_self
         self.link_flair_text = link_flair_text
