@@ -5,10 +5,12 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**/Dockerfile'
+      - 'LICENSE'
   pull_request:
     branches: [ main ]
     paths-ignore:
       - '**/Dockerfile'
+      - 'LICENSE'
   schedule:
     - cron: '0 1 * * MON' # Every Monday.
   workflow_dispatch: # Manual trigger.
