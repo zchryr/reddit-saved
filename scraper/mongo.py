@@ -40,7 +40,7 @@ class MongoClient:
         """Get Reddit submission/comment ids that have already been saved to DB."""
         mongo_filter = {}
         mongo_project = {
-            'id': True
+            'reddit_id': True
         }
 
         result = self.col.find(
@@ -48,7 +48,7 @@ class MongoClient:
             projection=mongo_project
         )
         for existing_id in result:
-            self.existing_ids.add(existing_id['id'])
+            self.existing_ids.add(existing_id['reddit_id'])
 
     def check_existing(self, save_id):
         """Checks if a submission/comment already exists in DB."""

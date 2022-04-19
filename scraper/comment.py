@@ -11,7 +11,7 @@ class Comment:
         self.created_utc = created_utc
         self.distinguished = distinguished
         self.edited = edited
-        self.id = cid
+        self.reddit_id = cid
         self.is_submitter = is_submitter
         self.link_id = link_id
         self.parent_id = parent_id

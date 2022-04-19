@@ -50,7 +50,7 @@ class Reddit:
                                                 save.stickied, save.subreddit.display_name,
                                                 save.subreddit.id, save.title, save.upvote_ratio,
                                                 save.url)
-                        if self.mongo_client.check_existing(submission.id) is False:
+                        if self.mongo_client.check_existing(save.id) is False:
                             try:
                                 self.mongo_client.insert_one(submission.__dict__)
                                 LOGGER.info("Saved post ID: " + str(save.id) + " successfully!")
@@ -59,15 +59,15 @@ class Reddit:
                                 LOGGER.error("Exception: " + str(error))
                             else:
                                 try:
-                                    self.unsave(submission.id, "submission")
+                                    self.unsave(save.id, "submission")
                                 except Exception as unsave_error:
-                                    LOGGER.error("Failed to unsave: " + str(submission.id) +
+                                    LOGGER.error("Failed to unsave: " + str(save.id) +
                                                  " post.")
                                     LOGGER.error("Exception: " + str(unsave_error))
                         else:
-                            LOGGER.info("Post: " + str(submission.id) +
+                            LOGGER.info("Post: " + str(save.id) +
                                         " already exists in the database.")
-                            self.unsave(submission.id, "submission")
+                            self.unsave(save.id, "submission")
                             continue
                     except AttributeError as error:
                         LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
@@ -80,7 +80,7 @@ class Reddit:
                                           save.permalink, save.saved, save.score, save.stickied,
                                           save.submission.id, save.subreddit.display_name,
                                           save.subreddit.id)
-                        if self.mongo_client.check_existing(comment.id) is False:
+                        if self.mongo_client.check_existing(save.id) is False:
                             try:
                                 self.mongo_client.insert_one(comment.__dict__)
                                 LOGGER.info("Saved comment ID: " + str(save.id) + " successfully!")
@@ -89,15 +89,15 @@ class Reddit:
                                 LOGGER.error("Exception: " + str(error))
                             else:
                                 try:
-                                    self.unsave(comment.id, "comment")
+                                    self.unsave(save.id, "comment")
                                 except Exception as unsave_error:
-                                    LOGGER.error("Failed to unsave: " + str(submission.id)
+                                    LOGGER.error("Failed to unsave: " + str(save.id)
                                                 + " comment.")
                                     LOGGER.error("Exception: " + str(unsave_error))
                         else:
-                            LOGGER.info("Comment: " + str(comment.id) +
+                            LOGGER.info("Comment: " + str(save.id) +
                                         " already exists in the database.")
-                            self.unsave(comment.id, "comment")
+                            self.unsave(save.id, "comment")
                             continue
                     except AttributeError as error:
                         LOGGER.info("Save ID: " + str(save.id) + "was deleted or removed.")
