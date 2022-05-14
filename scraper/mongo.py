@@ -1,4 +1,5 @@
 """Library for using MongoDB from python"""
+from asyncio.log import logger
 import sys
 import pymongo
 from logger import Logger
@@ -7,9 +8,8 @@ LOGGER = Logger
 class MongoClient:
     """Class to interact with a MongoDB server"""
     def __init__(self, connection_url, protocol, port,
-                 db_username, db_password, db_name, ssl, reddit_username) -> None:
+                 db_username, db_password, ssl, reddit_username) -> None:
         self.client = None
-        self.existing_ids = set()
 
         try:
             self.client = pymongo.MongoClient(host=protocol + "://" + connection_url,
@@ -24,32 +24,62 @@ class MongoClient:
             LOGGER.critical("Exception: " + str(error))
             sys.exit(1)
 
-        self.database = self.client[db_name]
-        collection_name = 'saves - ' + reddit_username
-        self.col = self.database[collection_name]
+        self.database = self.client[reddit_username]
 
-    def insert_one(self, document):
+    def insert_one(self, save_type, document):
         """Insert one document (py dict) into collection."""
-        self.col.insert_one(document)
+        col = None
 
-    def insert_many(self, documents):
+        if save_type == 'submission':
+            col = self.database['submission']
+        elif save_type == 'comment':
+            col = self.database['comment']
+
+
+        try:
+            col.insert_one(document)
+            LOGGER.info("Saved " + save_type + " ID: " + document['reddit_id'] +
+                        " to the DB successfully!")
+        except Exception as e:
+            print("Error while inserting document into database: " + str(e))
+
+    def insert_many(self, save_type, documents):
         """Insert many documents (py dicts) into collection."""
-        self.col.insert_many(documents)
+        col = None
 
-    def get_existing(self):
-        """Get Reddit submission/comment ids that have already been saved to DB."""
-        mongo_filter = {}
-        mongo_project = {
-            'reddit_id': True
+        if save_type == 'submission':
+            col = self.database['submission']
+        elif save_type == 'comment':
+            col = self.database['comment']
+
+        try:
+            col.insert_many(documents)
+            LOGGER.info("Saved posts/comments to the DB successfully!")
+        except Exception as e:
+            print("Error while inserting document into database: " + str(e))
+
+    def check_existing(self, save_type, save_id):
+        """Checks if a submission/comment already exists in DB."""
+        if save_type == 'submission':
+            COL = self.database['submission']
+        elif save_type == 'comment':
+            COL = self.database['comment']
+
+        filter = {
+            'reddit_id': save_id
         }
 
-        result = self.col.find(
-            filter=mongo_filter,
-            projection=mongo_project
-        )
-        for existing_id in result:
-            self.existing_ids.add(existing_id['reddit_id'])
+        project = {
+            '_id': 1
+        }
 
-    def check_existing(self, save_id):
-        """Checks if a submission/comment already exists in DB."""
-        return save_id in self.existing_ids
+        RESULTS = COL.find_one(
+            filter=filter,
+            projection=project
+        )
+
+        if RESULTS == None:
+            return False
+        else:
+            LOGGER.info(save_type.capitalize() + " already exists in the database.")
+            return True
