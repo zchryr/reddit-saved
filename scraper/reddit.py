@@ -9,9 +9,6 @@ from mongo import MongoClient
 from logger import Logger
 LOGGER = Logger
 
-# TODO work check if exists back into workflow, possibly in mongo.py, rather than here
-# TODO work unsave back into workflow
-
 class Reddit:
     """Class to get saved Reddit posts, put them in a MongoDB, and unsave them."""
     def __init__(self, args, client_id, client_secret, reddit_username, reddit_password,
@@ -82,13 +79,14 @@ class Reddit:
                 try:
                     unsave_submission = self.reddit_client.submission(save_id)
                     unsave_submission.unsave()
-                    LOGGER.info("Unsaved post ID: " + str(save_id) + " on Reddit successfully!")
+                    LOGGER.info("Unsaved submission ID: " + str(save_id) + " on Reddit successfully!")
                 except Exception as e:
-                    print(e)
+                    LOGGER.error("Error while attempting to unsave submission: " + str(e))
             elif save_type == "comment":
                 try:
                     unsave_comment = self.reddit_client.comment(save_id)
                     unsave_comment.unsave()
                     LOGGER.info("Unsaved comment ID: " + str(save_id) + " on Reddit successfully!")
                 except Exception as e:
-                    print(e)
+                    LOGGER.error("Error while attempting to unsave comment: " + str(e))
+

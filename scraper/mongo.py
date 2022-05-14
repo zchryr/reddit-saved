@@ -41,7 +41,7 @@ class MongoClient:
             LOGGER.info("Saved " + save_type + " ID: " + document['reddit_id'] +
                         " to the DB successfully!")
         except Exception as e:
-            print("Error while inserting document into database: " + str(e))
+            LOGGER.error("Error while inserting document into database: " + str(e))
 
     def insert_many(self, save_type, documents):
         """Insert many documents (py dicts) into collection."""
@@ -56,7 +56,7 @@ class MongoClient:
             col.insert_many(documents)
             LOGGER.info("Saved posts/comments to the DB successfully!")
         except Exception as e:
-            print("Error while inserting document into database: " + str(e))
+            LOGGER.error("Error while inserting document into database: " + str(e))
 
     def check_existing(self, save_type, save_id):
         """Checks if a submission/comment already exists in DB."""
