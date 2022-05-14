@@ -31,9 +31,9 @@ class MongoClient:
         col = None
 
         if save_type == 'submission':
-            col = self.database['submission']
+            col = self.database['submissions']
         elif save_type == 'comment':
-            col = self.database['comment']
+            col = self.database['comments']
 
 
         try:
@@ -48,9 +48,9 @@ class MongoClient:
         col = None
 
         if save_type == 'submission':
-            col = self.database['submission']
+            col = self.database['submissions']
         elif save_type == 'comment':
-            col = self.database['comment']
+            col = self.database['comments']
 
         try:
             col.insert_many(documents)
@@ -61,9 +61,9 @@ class MongoClient:
     def check_existing(self, save_type, save_id):
         """Checks if a submission/comment already exists in DB."""
         if save_type == 'submission':
-            COL = self.database['submission']
+            COL = self.database['submissions']
         elif save_type == 'comment':
-            COL = self.database['comment']
+            COL = self.database['comments']
 
         filter = {
             'reddit_id': save_id
