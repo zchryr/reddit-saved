@@ -10,7 +10,3 @@ module.exports = {
     }
   },
 };
-
-// return Comment.find().then((result) => {
-//   return result;
-// });

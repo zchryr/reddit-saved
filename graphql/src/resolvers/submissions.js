@@ -10,9 +10,3 @@ module.exports = {
     }
   },
 };
-
-// submissions: () => {
-//   return Submission.find().then((result) => {
-//     return result;
-//   });
-// },
