@@ -81,5 +81,6 @@ class MongoClient:
         if RESULTS == None:
             return False
         else:
-            LOGGER.info(save_type.capitalize() + " already exists in the database.")
+            LOGGER.info(save_type.capitalize() + " ID: " + str(save_id) +
+                        " already exists in the database.")
             return True
