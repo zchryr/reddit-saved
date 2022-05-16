@@ -2,11 +2,11 @@ name: Anchore Container Scan - scraper
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - scraper/Dockerfile
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - scraper/Dockerfile
   schedule:
@@ -36,7 +36,7 @@ jobs:
         id: scan
         uses: anchore/scan-action@v3
         with:
-          image: "zchryr/scraper:latest"
+          image: 'zchryr/scraper:latest'
           acs-report-enable: true
           fail-build: true
           severity-cutoff: medium
