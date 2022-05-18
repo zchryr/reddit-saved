@@ -5,3 +5,9 @@ updates:
     directory: '/graphql'
     schedule:
       interval: 'daily'
+
+  # Enable version updates for scraper
+  - package-ecosystem: 'pip'
+    directory: '/scraper'
+    schedule:
+      interval: 'daily'
