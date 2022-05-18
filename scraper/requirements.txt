@@ -1,2 +1,2 @@
-pymongo
-praw
+pymongo==4.0.2
+praw==7.6.0
