@@ -24,7 +24,7 @@ class Reddit:
         self.limit = limit
         self.mongo_client = MongoClient(connection_url=args.connection_url, protocol=args.protocol,
                                         port=args.port, db_username=args.db_username,
-                                        db_password=args.db_password, ssl=args.ssl,
+                                        db_password=args.db_password,
                                         reddit_username=args.reddit_username)
 
 

@@ -2,21 +2,22 @@
 from asyncio.log import logger
 import sys
 import pymongo
+import certifi
 from logger import Logger
 LOGGER = Logger
 
 class MongoClient:
     """Class to interact with a MongoDB server"""
     def __init__(self, connection_url, protocol, port,
-                 db_username, db_password, ssl, reddit_username) -> None:
+                 db_username, db_password, reddit_username) -> None:
         self.client = None
 
         try:
-            self.client = pymongo.MongoClient(host=protocol + "://" + connection_url,
-                                              port=port,
+            self.client = pymongo.MongoClient(host=protocol + "://" + connection_url +
+                                              "/?retryWrites=true&w=majority",
                                               username=db_username,
                                               password=db_password,
-                                              ssl=ssl)
+                                              tlsCAFile=certifi.where())
             self.client.server_info()
             LOGGER.info("Successfully connected to MongoDB!")
         except Exception as error:
