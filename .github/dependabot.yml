@@ -11,3 +11,9 @@ updates:
     directory: '/scraper'
     schedule:
       interval: 'daily'
+
+  # Enable version updates for ui
+  - package-ecosyste: 'npm'
+    directory: '/ui'
+    schedule:
+      interval: 'daily'
