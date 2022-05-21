@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - scraper/Dockerfile
+      - graphql/Dockerfile
   schedule:
     - cron: '0 1 * * MON' # Every Monday.
   workflow_dispatch: # Manual trigger.
