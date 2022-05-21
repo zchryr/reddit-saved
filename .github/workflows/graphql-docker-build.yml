@@ -20,10 +20,9 @@ jobs:
     permissions:
       contents: read
       packages: write
-    environments:
-      strategy:
-        matrix:
-          env: ['development', 'production']
+    strategy:
+      matrix:
+        env: ['development', 'production']
 
     steps:
       - name: Checkout code
