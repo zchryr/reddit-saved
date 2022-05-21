@@ -24,10 +24,12 @@ RUN chmod +x /usr/local/bin/dumb-init
 # Unprivileged user setup.
 RUN addgroup -S rs-graphql && \
     adduser -G rs-graphql -S rs-graphql
-USER rs-graphql
 
 # Prod files.
 COPY --chown=rs-graphql:rs-graphql /src .
+
+# Set user.
+USER rs-graphql
 
 # Node production.
 ENV NODE_ENV ${environment}
