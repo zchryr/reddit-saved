@@ -41,3 +41,4 @@ jobs:
           tags: ghcr.io/${{ github.actor }}/rs-graphql:${{ matrix.env }}
           context: ./graphql
           push: true
+          build-args: environment=${{ matrix.env }}
