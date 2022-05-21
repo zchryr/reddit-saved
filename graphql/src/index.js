@@ -15,8 +15,6 @@ const db_uri =
   mongo["protocol"] +
   "://" +
   mongo["connection_url"] +
-  ":" +
-  mongo["port"] +
   "/" +
   reddit["username"];
 
