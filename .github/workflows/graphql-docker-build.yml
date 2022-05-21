@@ -1,0 +1,38 @@
+name: GraphQL Docker Build & Push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - graphql/Dockerfile
+  pull_request:
+    branches: [main]
+    paths:
+      - graphql/Dockerfile
+  schedule:
+    - cron: '0 1 * * MON' # Every Monday.
+  workflow_dispatch: # Manual trigger.
+
+jobs:
+  graphql-build-push:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build & push image
+        uses: docker/build-push-action@v3
+        with:
+          tags: ${{ github.actor }}/rs-graphql:latest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          context: ./graphql
+          push: false
