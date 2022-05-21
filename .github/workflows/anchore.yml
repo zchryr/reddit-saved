@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - scraper/Dockerfile
+      - graphql/Dockerfile
   pull_request:
     branches: [main]
     paths:
@@ -22,7 +23,7 @@ jobs:
         uses: actions/checkout@main
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Build image
         uses: docker/build-push-action@v2
