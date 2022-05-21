@@ -1,0 +1,40 @@
+name: scraper Docker Build & Push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - scraper/Dockerfile
+  pull_request:
+    branches: [main]
+    paths:
+      - scraper/Dockerfile
+  schedule:
+    - cron: '0 1 * * MON' # Every Monday.
+  workflow_dispatch: # Manual trigger.
+
+jobs:
+  scraper-build-push:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        uses: docker/build-push-action@v3
+        with:
+          tags: ghcr.io/${{ github.actor }}/rs-scraper:latest
+          context: ./scraper
+          push: true
