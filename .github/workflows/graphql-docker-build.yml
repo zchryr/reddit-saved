@@ -12,7 +12,7 @@ on:
   schedule:
     - cron: '0 1 * * MON' # Every Monday.
   workflow_dispatch: # Manual trigger.
-
+# GITHUB_TOKEN
 jobs:
   graphql-build-push:
     name: Docker Build & Push
@@ -27,12 +27,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build & push image
         uses: docker/build-push-action@v3
         with:
           tags: ${{ github.actor }}/rs-graphql:latest
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ghcr.io
           context: ./graphql
-          push: false
+          push: true

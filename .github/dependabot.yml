@@ -29,3 +29,9 @@ updates:
     directory: '/ui'
     schedule:
       interval: 'daily'
+
+  # Updates for workflows
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
