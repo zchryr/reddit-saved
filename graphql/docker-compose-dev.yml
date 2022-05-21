@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  graphql:
-    image: rs-graphql:dev
-    container_name: rs-graphql
+  graphql-dev:
+    image: ghcr.io/zchryr/rs-graphql:development
+    container_name: rs-graphql-dev
     ports:
       - 3000:3000
     environment:
