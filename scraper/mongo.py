@@ -8,7 +8,7 @@ LOGGER = Logger
 
 class MongoClient:
     """Class to interact with a MongoDB server"""
-    def __init__(self, connection_url, protocol, port,
+    def __init__(self, connection_url, protocol,
                  db_username, db_password, reddit_username) -> None:
         self.client = None
 
