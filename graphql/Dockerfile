@@ -1,0 +1,31 @@
+# Base image.
+FROM node:16.15.0-alpine3.15
+
+# Build arg.
+ARG environment
+
+# Work directory.
+WORKDIR /app
+
+# Updates.
+RUN apk update && \
+    apk upgrade
+
+# Node packages.
+COPY package.json yarn.lock ./
+
+# Install.
+RUN yarn install --frozen-lockfile --no-cache --production
+
+# Unprivileged user setup.
+RUN addgroup -S rs-graphql && \
+    adduser -G rs-graphql -S rs-graphql
+USER rs-graphql
+
+# Prod files.
+ADD /src/* .
+
+# Node production.
+ENV NODE_ENV ${environment}
+
+CMD ["dumb-init", "node", "index.js"]

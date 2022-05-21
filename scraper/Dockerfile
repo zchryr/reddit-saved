@@ -9,9 +9,9 @@ RUN apk update && \
     apk upgrade
 
 # Unprivileged user setup.
-RUN addgroup -S scraper && \
-    adduser -G scraper -S scraper
-USER scraper
+RUN addgroup -S rs-scraper && \
+    adduser -G rs-scraper -S rs-scraper
+USER rs-scraper
 
 # Install python packages.
 COPY requirements.txt .

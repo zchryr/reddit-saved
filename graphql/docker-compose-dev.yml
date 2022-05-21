@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  graphql:
+    image: rc-graphql:dev
+    environment:
+      - REDDIT_CLIENT_ID=CHANGEME
+      - REDDIT_CLIENT_SECRET=CHANGEME
+      - REDDIT_USERNAME=CHANGEME
+      - REDDIT_PASSWORD=CHANGEME
+      - REDDIT_LIMIT=CHANGEME
+      - MONGO_USER=CHANGEME
+      - MONGO_PASSWORD=CHANGEME
+      - MONGO_URL=CHANGEME
+      - MONGO_PROTOCOL=CHANGEME
