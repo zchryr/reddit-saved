@@ -8,7 +8,6 @@ const graphQlResolvers = require("./resolvers/index");
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
-// const bodyParser = require("body-parser");
 const { graphqlHTTP } = require("express-graphql");
 
 // Environment.
