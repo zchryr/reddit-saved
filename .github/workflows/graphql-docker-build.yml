@@ -17,6 +17,10 @@ jobs:
   graphql-build-push:
     name: Docker Build & Push
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@main
@@ -38,7 +42,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ${{ github.actor }}/rs-graphql:latest
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
           context: ./graphql
           push: true
