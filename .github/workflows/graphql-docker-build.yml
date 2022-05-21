@@ -35,6 +35,6 @@ jobs:
       - name: Build & push image
         uses: docker/build-push-action@v3
         with:
-          tags: ${{ github.actor }}/rs-graphql:latest
+          tags: ghcr.io/${{ github.actor }}/rs-graphql:latest
           context: ./graphql
           push: true
