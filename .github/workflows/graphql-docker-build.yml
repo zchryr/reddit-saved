@@ -39,6 +39,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ghcr.io/${{ github.actor }}/rs-graphql:${{ matrix.env }}
+          platforms: linux/amd64,linux/arm64
           context: ./graphql
           push: true
           build-args: environment=${{ matrix.env }}

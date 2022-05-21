@@ -1,4 +1,4 @@
-name: scraper Docker Build & Push
+name: Scraper Docker Build & Push
 
 on:
   push:
@@ -36,5 +36,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ghcr.io/${{ github.actor }}/rs-scraper:latest
+          platforms: linux/amd64,linux/arm64
           context: ./scraper
           push: true
