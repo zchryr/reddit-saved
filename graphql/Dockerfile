@@ -17,13 +17,17 @@ COPY package.json yarn.lock ./
 # Install.
 RUN yarn install --frozen-lockfile --no-cache --production
 
+# Dumb init.
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.1.1/dumb-init_1.1.1_amd64 /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init
+
 # Unprivileged user setup.
 RUN addgroup -S rs-graphql && \
     adduser -G rs-graphql -S rs-graphql
 USER rs-graphql
 
 # Prod files.
-ADD /src/* .
+COPY --chown=rs-graphql:rs-graphql /src .
 
 # Node production.
 ENV NODE_ENV ${environment}
