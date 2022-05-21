@@ -20,6 +20,10 @@ jobs:
     permissions:
       contents: read
       packages: write
+    environments:
+      strategy:
+        matrix:
+          env: ['development', 'production']
 
     steps:
       - name: Checkout code
@@ -35,6 +39,6 @@ jobs:
       - name: Build & push image
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/${{ github.actor }}/rs-graphql:latest
+          tags: ghcr.io/${{ github.actor }}/rs-graphql:${{ matrix.env }}
           context: ./graphql
           push: true
