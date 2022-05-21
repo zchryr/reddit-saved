@@ -1,13 +1,37 @@
 version: 2
 updates:
-  # Enable version updates for graphql
+  # Updates for graphql npm
   - package-ecosystem: 'npm'
     directory: '/graphql'
     schedule:
       interval: 'daily'
 
-  # Enable version updates for scraper
+  # Updates for graphql docker
+  - package-ecosystem: 'docker'
+    directory: '/graphql'
+    schedule:
+      interval: 'daily'
+
+  # Updates for scraper pip
   - package-ecosystem: 'pip'
     directory: '/scraper'
+    schedule:
+      interval: 'daily'
+
+  # Updates for scraper docker
+  - package-ecosystem: 'docker'
+    directory: '/scraper'
+    schedule:
+      interval: 'daily'
+
+  # Updates for ui npm
+  - package-ecosystem: 'npm'
+    directory: '/ui'
+    schedule:
+      interval: 'daily'
+
+  # Updates for workflows
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
       interval: 'daily'

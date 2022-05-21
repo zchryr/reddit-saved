@@ -17,10 +17,8 @@ PARSER.add_argument('-limit', help='Limit of API requests made to Reddit. None i
 # MongoDB args.
 PARSER.add_argument('-connection_url', type=str, required=True, help='MongoDB connection URL')
 PARSER.add_argument('-protocol', type=str, required=True, help='MongoDB protocol')
-PARSER.add_argument('-port', type=int, required=True, help='MongoDB listening port')
 PARSER.add_argument('-db_username', type=str, required=True, help='MongoDB authentication username')
 PARSER.add_argument('-db_password', type=str, required=True, help='MongoDB user password')
-PARSER.add_argument('-ssl', type=str, required=True, help='MongoDB TLS configuration')
 
 # Other args.
 PARSER.add_argument('-unsave', type=str, required=False, default='yes',
