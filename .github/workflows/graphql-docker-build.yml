@@ -22,7 +22,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        env: ['development', 'production', 'latest']
+        env: ['development', 'latest']
 
     steps:
       - name: Checkout code
