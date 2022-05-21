@@ -8,7 +8,7 @@ const graphQlResolvers = require("./resolvers/index");
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const { graphqlHTTP } = require("express-graphql");
 
 // Environment.
@@ -25,17 +25,6 @@ const db_uri =
   "/" +
   reddit["username"];
 
-app.use(bodyParser.json());
-
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: graphiql,
-  })
-);
-
 mongoose
   .connect(db_uri, {
     auth: {
@@ -48,6 +37,14 @@ mongoose
   })
   .then(() => {
     console.log("Successfully connected to MongoDB!");
+    app.use(
+      "/graphql",
+      graphqlHTTP({
+        schema: graphQlSchema,
+        rootValue: graphQlResolvers,
+        graphiql: graphiql,
+      })
+    );
     app.listen(3000);
   })
   .catch((err) => {
