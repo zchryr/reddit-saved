@@ -29,7 +29,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v3
         with:
-          tags: ${{ github.actor }}/scraper:latest
+          tags: zchryr/rs-scraper:latest
           context: ./scraper
           push: false
           load: true
@@ -38,7 +38,7 @@ jobs:
         id: scan
         uses: anchore/scan-action@v3
         with:
-          image: '${{ github.actor }}/scraper:latest'
+          image: 'zchryr/rs-scraper:latest'
           acs-report-enable: true
           fail-build: true
           severity-cutoff: medium
