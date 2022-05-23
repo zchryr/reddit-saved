@@ -1,5 +1,5 @@
 # Base image.
-FROM node:16.15.0-alpine3.15
+FROM node:18.2.0-alpine3.15
 
 # Build arg.
 ARG environment
