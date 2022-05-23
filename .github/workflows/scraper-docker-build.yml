@@ -44,7 +44,7 @@ jobs:
       - name: Build & push image
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/${{ github.actor }}/rs-scraper:latest
+          tags: ghcr.io/zchryr/rs-scraper:latest
           platforms: linux/amd64,linux/arm64
           context: ./scraper
           push: true
