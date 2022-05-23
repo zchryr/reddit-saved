@@ -47,7 +47,7 @@ jobs:
       - name: Build & push image
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/${{ github.actor }}/rs-graphql:${{ matrix.env }}
+          tags: ghcr.io/zchryr/rs-graphql:${{ matrix.env }}
           platforms: linux/amd64,linux/arm64
           context: ./graphql
           push: true
